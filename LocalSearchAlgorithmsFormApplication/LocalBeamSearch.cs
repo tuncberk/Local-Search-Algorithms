@@ -12,7 +12,7 @@ namespace LocalSearchAlgorithmsFormApplication
         int states;
         int gridSize;
 
-        const int maxNumberOfIterations = 1000;
+        const int maxNumberOfIterations = 500;
 
         public LocalBeamSearch(int gridSize, Queen[] queens, int states)
         {
@@ -122,7 +122,7 @@ namespace LocalSearchAlgorithmsFormApplication
                 heuristicsCopy[i] =heuristics[i];
             }
             //heuristicsCopy = heuristics;
-            heuristicsCopy.Sort();
+            heuristics.Sort();
 
             for (int i = 0; i < heuristicsCopy.Count; i++)
             {

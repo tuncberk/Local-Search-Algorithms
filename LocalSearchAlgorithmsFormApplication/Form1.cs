@@ -141,7 +141,7 @@ namespace LocalSearchAlgorithmsFormApplication
                 textBox7.Visible = false;
                 textBox8.Visible = false;
             }
-            
+
             else if (comboBox1.SelectedIndex == 2)
             {
                 //2
@@ -165,7 +165,7 @@ namespace LocalSearchAlgorithmsFormApplication
                 textBox7.Visible = false;
                 textBox8.Visible = false;
             }
-            else if(comboBox1.SelectedIndex == 3)
+            else if (comboBox1.SelectedIndex == 3)
             {
                 //3
                 label6.Visible = true;
@@ -178,11 +178,11 @@ namespace LocalSearchAlgorithmsFormApplication
                 textBox6.Visible = true;
                 textBox7.Visible = true;
                 textBox8.Visible = true;
-                textBox4.Text = "";
-                textBox5.Text = "";
-                textBox6.Text = "";
-                textBox7.Text = "";
-                textBox8.Text = "";
+                textBox4.Text = "4";
+                textBox5.Text = "40";
+                textBox6.Text = "4";
+                textBox7.Text = "4";
+                textBox8.Text = "10";
                 //1
                 label1.Visible = false;
                 label2.Visible = false;
@@ -198,6 +198,7 @@ namespace LocalSearchAlgorithmsFormApplication
         {
             button1.Enabled = false;
             sizeCheck = true;
+            int oldGridSize = gridSize;
             if (comboBox2.SelectedIndex == 0)
             {
                 gridSize = 4;
@@ -226,7 +227,7 @@ namespace LocalSearchAlgorithmsFormApplication
             {
                 gridSize = 10;
             }
-            
+
             //to remove the excess grids.
             for (int i = 0; i < Math.Sqrt(_chessBoardPanels.Length); i++)
             {
@@ -245,9 +246,9 @@ namespace LocalSearchAlgorithmsFormApplication
             }
             Size s = new Size();
             s = this.Size;
-            this.Size = new Size(25*(gridSize-4)+ s.Width, s.Height);
-         
-            
+            this.Size = new Size(55 * (gridSize - oldGridSize) + s.Width, s.Height);
+
+
             createBoard();
         }
 
@@ -272,7 +273,7 @@ namespace LocalSearchAlgorithmsFormApplication
                 pictureBoxes[i].Location = new Point(25 + tileSize * queens[i].getX(), 25 + queens[i].getY() * tileSize);
             }
         }
-
+        //Selecting the algorithm
         private void button1_Click(object sender, EventArgs e)
         {
             textBox9.Visible = false;
@@ -300,11 +301,21 @@ namespace LocalSearchAlgorithmsFormApplication
             }
             else if (comboBox1.SelectedIndex == 3) //genetic algorithm
             {
+                int generationSize = int.Parse(textBox4.Text);
+                int elitismPercent = int.Parse(textBox5.Text);
+                int crossoverProbability = int.Parse(textBox6.Text);
+                int mutationProbability = int.Parse(textBox7.Text);
+                int numberOfGenerations = int.Parse(textBox8.Text);
+
+                Genetic genetic = new Genetic(gridSize, queens);
+                queens = genetic.geneticAlgorithm(generationSize, elitismPercent, crossoverProbability, mutationProbability, numberOfGenerations);
+
+
 
             }
-            
+
             reArrangeQueens();
-            if (Heuristic.calculateHeuristicAllBoard(queens,gridSize) == 0)
+            if (Heuristic.calculateHeuristicAllBoard(queens, gridSize) == 0)
                 textBox9.Text = "SUCCESS!";
             else
                 textBox9.Text = "FAIL!";
@@ -372,7 +383,7 @@ namespace LocalSearchAlgorithmsFormApplication
             }
             else if (comboBox1.SelectedIndex == 3)
             {
-
+                return true;
             }
             return false;
         }

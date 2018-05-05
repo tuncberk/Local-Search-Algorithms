@@ -57,7 +57,7 @@ namespace LocalSearchAlgorithmsFormApplication
                 int sum = board[j].getX() + board[j].getY();  //sum value of coordinates
                                                               // int minus = Abs(queen.getX() - queen.getY()); //differance between coordinates
 
-                for (int k = 0; k < gridSize; k++)
+                for (int k = j; k < gridSize; k++)
                 {
                     if (board[k] != board[j])
                     {
