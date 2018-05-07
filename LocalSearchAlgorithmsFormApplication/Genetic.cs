@@ -9,11 +9,10 @@ namespace LocalSearchAlgorithmsFormApplication
     class Genetic
     {
         int gridSize;
-        Queen[] queens = new Queen[10];
-        public Genetic(int gridSize, Queen[] queens)
+
+        public Genetic(int gridSize)
         {
             this.gridSize = gridSize;
-            this.queens = queens;
         }
 
         public Queen[] geneticAlgorithm(int generationSize, int elitismPercent, int crossoverProbability, int mutationProbability, int numberOfGenerations)
@@ -21,13 +20,13 @@ namespace LocalSearchAlgorithmsFormApplication
             generationSize = generationSize - (generationSize % 2);
             int elites = elitismPercent * generationSize / 100;
 
-            List<Queen[]> generationArray = new List<Queen[]>(generationSize);
-            List<Queen[]> tempGenerationArray = new List<Queen[]>(generationSize);
+            Queen[][] generationArray = new Queen[generationSize][];
+            Queen[][] tempGenerationArray = new Queen[elites][];
             List<int> heuristics = new List<int>();
 
             generationArray = generateGeneration(generationArray, generationSize);  //generating random generations
 
-            for (int i = 0; i < numberOfGenerations; i++)
+            for (int i = 0; i < numberOfGenerations; i++)   //main loop
             {
                 for (int j = 0; j < generationSize; j++)    //heuristic values to array
                 {
@@ -38,28 +37,29 @@ namespace LocalSearchAlgorithmsFormApplication
                     }
                     heuristics.Add(h);
                 }
-
                 generationArray = sortQueens(generationArray, heuristics);  //sorting queens
-
-                selectQueens(generationArray, tempGenerationArray, elites); //select queens according to elitism percent
+            
+                tempGenerationArray = selectQueens(generationArray, elites); //select queens according to elitism percent
 
                 generationArray = crossoverQueens(generationArray, crossoverProbability);
 
                 generationArray = mutateQueens(generationArray, mutationProbability);
 
-                generationArray.InsertRange(0, tempGenerationArray);    //insert the elites to the beginning.
-
-                generationArray.RemoveRange(generationSize, generationArray.Count - generationSize);    //get generation size back to normal by removing generations from the end.
+                List<Queen[]> list = new List<Queen[]>(generationArray);    //converting array to list to be able to use inserRange and removeRange methods.
+               
+                list.InsertRange(0, tempGenerationArray);    //insert the elites to the beginning.
+                list.RemoveRange(generationSize, list.Count - generationSize);    //get generation size back to normal by removing generations from the end.
+                generationArray = list.ToArray();
 
                 heuristics.Clear();
             }
-            return generationArray[0];  
+            return generationArray[0];
         }
 
-        private List<Queen[]> mutateQueens(List<Queen[]> generationArray, int mutationProbability)
+        private Queen[][] mutateQueens(Queen[][] generationArray, int mutationProbability)
         {
             Random rand = new Random();
-            for (int i = 0; i < generationArray.Count; i++)
+            for (int i = 0; i < generationArray.Length; i++)
             {
                 int mutationRand = rand.Next(0, 100);
                 if (mutationRand < mutationProbability)
@@ -72,17 +72,26 @@ namespace LocalSearchAlgorithmsFormApplication
             return generationArray;
         }
 
-        public void selectQueens(List<Queen[]> generationArray, List<Queen[]> tempGenerationArray, int elites)
+        public Queen[][] selectQueens(Queen[][] generationArray, int elites)
         {
+            Queen[][] tempGenerationArray = new Queen[elites][];
+
             for (int i = 0; i < elites; i++)
             {
-                tempGenerationArray.Add(generationArray[i]);
+                Queen[] qa = new Queen[gridSize];
+                for (int j = 0; j < gridSize; j++)
+                {
+                    Queen q = new Queen(generationArray[i][j].getX(), generationArray[i][j].getY());
+                    qa[j] = q;
+                }
+                tempGenerationArray[i] = qa;
             }
+            return tempGenerationArray;
         }
 
-        public List<Queen[]> crossoverQueens(List<Queen[]> generationArray, int crossoverProbability)
+        public Queen[][] crossoverQueens(Queen[][] generationArray, int crossoverProbability)
         {
-            for (int i = 0; i < generationArray.Count; i+=2)
+            for (int i = 0; i < generationArray.Length; i += 2)
             {
                 Random rand = new Random();
                 int crossoverRand = rand.Next(0, 100);
@@ -101,39 +110,30 @@ namespace LocalSearchAlgorithmsFormApplication
             return generationArray;
 
         }
-        public List<Queen[]> sortQueens(List<Queen[]> generationArray, List<int> heuristics)
+        public Queen[][] sortQueens(Queen[][] generationArray, List<int> heuristics)
         {
-            List<Queen[]> generationArraySorted = new List<Queen[]>(generationArray);
+            Queen[][] generationArraySorted = new Queen[generationArray.Length][];
             List<int> heuristicsCopy = new List<int>(heuristics);
-            for (int i = 0; i < generationArray.Count; i++)
-            {
-                generationArraySorted[i] = generationArray[i];
-            }
-            for (int i = 0; i < heuristics.Count; i++)
-            {
-                heuristicsCopy[i] = heuristics[i];
-            }
+          
             heuristics.Sort();
-
+            List<int> index = new List<int>();
             for (int i = 0; i < heuristicsCopy.Count; i++)
             {
                 for (int j = 0; j < heuristics.Count; j++)
                 {
                     if (heuristicsCopy[i] == heuristics[j])
                     {
-                        int temp = j;
-                        while (temp < heuristics.Count && generationArraySorted[j] != generationArray[i])
-                        {
-                            temp++;
-                        }
+                        if (index.Contains(j))
+                            continue;
                         generationArraySorted[j] = generationArray[i];
+                        index.Add(j);
+                        break;
                     }
                 }
             }
-
             return generationArraySorted;
         }
-        public List<Queen[]> generateGeneration(List<Queen[]> generationArray, int generationSize)
+        public Queen[][] generateGeneration(Queen[][] generationArray, int generationSize)
         {
             Random rand = new Random();
             for (int i = 0; i < generationSize; i++)   //for each state
@@ -145,7 +145,7 @@ namespace LocalSearchAlgorithmsFormApplication
                     Queen q = new Queen(k, row);
                     queenArray[k] = q;
                 }
-                generationArray.Add(queenArray);
+                generationArray[i] = queenArray;
             }
             return generationArray;
         }

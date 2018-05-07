@@ -29,15 +29,8 @@ namespace LocalSearchAlgorithmsFormApplication
             int temp = temperature;
             Heuristic heuristic = new Heuristic(queens, gridSize);
 
-            // ************ DEBUG *****************************
-            for (int i = 0; i < gridSize; i++)
+            for (int x = 0; x < maxNumberOfIterations && Heuristic.calculateHeuristicAllBoard(queens, gridSize) != 0; x++)
             {
-                Debug.WriteLine(i + " queen " + " X - Y: " + queens[i].getX() + " - " + queens[i].getY() + " w/ heuristic: " + heuristic.calculateHeuristic(queens[i]));
-            }
-            // ************ DEBUG ******************************
-            for(int x= 0; x<maxNumberOfIterations && Heuristic.calculateHeuristicAllBoard(queens, gridSize) != 0; x++) {
-                
-                    
                 for (int i = 0; i < gridSize; i++)   //for each queen
                 {
                     temperature = temp;
@@ -61,7 +54,7 @@ namespace LocalSearchAlgorithmsFormApplication
                         Random rand2 = new Random();
                         const int decimals = 10000;
                         int large = rand2.Next(0, decimals);
-                        double threshold = (double)large / decimals; //gives a random value between 0,1 ??????????????????????????????????
+                        double threshold = (double)large / decimals; //gives a random value between 0,1 
 
                         double probability = Math.Exp(-(double)deltaH / (double)temperature);
                         if (probability < threshold)    //if the probability value is smaller than threshold
@@ -72,16 +65,6 @@ namespace LocalSearchAlgorithmsFormApplication
                     }
                 }
             }
-            // *************** DEBUG *****************************
-            Debug.WriteLine("");
-            Debug.WriteLine("After HillClimb...");
-            for (int i = 0; i < gridSize; i++)
-            {
-                Debug.WriteLine(i + " queen " + " X - Y: " + queens[i].getX() + " - " + queens[i].getY() + " w/ heuristic: " + heuristic.calculateHeuristic(queens[i]));
-            }
-            // *************** DEBUG ***************************
-
-
             return queens;
         }
     }

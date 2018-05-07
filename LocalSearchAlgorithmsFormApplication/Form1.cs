@@ -178,11 +178,11 @@ namespace LocalSearchAlgorithmsFormApplication
                 textBox6.Visible = true;
                 textBox7.Visible = true;
                 textBox8.Visible = true;
-                textBox4.Text = "4";
-                textBox5.Text = "40";
-                textBox6.Text = "4";
-                textBox7.Text = "4";
-                textBox8.Text = "10";
+                textBox4.Text = "10";
+                textBox5.Text = "10";
+                textBox6.Text = "50";
+                textBox7.Text = "50";
+                textBox8.Text = "10000";
                 //1
                 label1.Visible = false;
                 label2.Visible = false;
@@ -227,7 +227,6 @@ namespace LocalSearchAlgorithmsFormApplication
             {
                 gridSize = 10;
             }
-
             //to remove the excess grids.
             for (int i = 0; i < Math.Sqrt(_chessBoardPanels.Length); i++)
             {
@@ -279,9 +278,7 @@ namespace LocalSearchAlgorithmsFormApplication
             textBox9.Visible = false;
             if (comboBox1.SelectedIndex == 0) //hill-climb
             {
-                // generateRandomQueens();
                 HillClimb hill = new HillClimb(gridSize, queens);
-                // System.Threading.Thread.Sleep(2000);
                 queens = hill.HillclimbingAlgorithm();
             }
             else if (comboBox1.SelectedIndex == 1) // simulated annealing
@@ -295,9 +292,8 @@ namespace LocalSearchAlgorithmsFormApplication
             else if (comboBox1.SelectedIndex == 2) //local beam search
             {
                 int states = int.Parse(textBox3.Text);
-                LocalBeamSearch localBeam = new LocalBeamSearch(gridSize, queens, states);
+                LocalBeamSearch localBeam = new LocalBeamSearch(gridSize, states);
                 queens = localBeam.localBeamSearchAlgorithm();
-
             }
             else if (comboBox1.SelectedIndex == 3) //genetic algorithm
             {
@@ -307,11 +303,8 @@ namespace LocalSearchAlgorithmsFormApplication
                 int mutationProbability = int.Parse(textBox7.Text);
                 int numberOfGenerations = int.Parse(textBox8.Text);
 
-                Genetic genetic = new Genetic(gridSize, queens);
+                Genetic genetic = new Genetic(gridSize);
                 queens = genetic.geneticAlgorithm(generationSize, elitismPercent, crossoverProbability, mutationProbability, numberOfGenerations);
-
-
-
             }
 
             reArrangeQueens();
@@ -322,13 +315,6 @@ namespace LocalSearchAlgorithmsFormApplication
 
             textBox9.Visible = true;
         }
-        //public void hillClimb()
-        //{
-        //    for (int i = 0; i < gridSize; i++)
-        //    {
-        //        queens[i]
-        //    }
-        //}
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             //will show relevant items
@@ -349,7 +335,7 @@ namespace LocalSearchAlgorithmsFormApplication
             }
             else
             {
-                MessageBox.Show("Please Fill All the Fields!");
+                MessageBox.Show("Please Fill All the Fields Correctly!");
             }
         }
         //to check if all the fields are filled

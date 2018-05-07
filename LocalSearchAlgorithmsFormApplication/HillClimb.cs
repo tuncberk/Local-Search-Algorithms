@@ -22,13 +22,7 @@ namespace LocalSearchAlgorithmsFormApplication
         public Queen[] HillclimbingAlgorithm()
         {
             Heuristic heuristic = new Heuristic(queens, gridSize);
-            Debug.WriteLine("");
-            // ************ DEBUG *****************************
-            for (int i = 0; i < gridSize; i++)
-            {
-                Debug.WriteLine(i + " queen " + " X - Y: " + queens[i].getX() + " - " + queens[i].getY() + " w/ heuristic: " + heuristic.calculateHeuristic(queens[i]));
-            }
-            // ************ DEBUG ******************************
+         
             for (int x = 0; x < maxNumberOfIterations && Heuristic.calculateHeuristicAllBoard(queens, gridSize) != 0; x++)
             {
 
@@ -59,21 +53,10 @@ namespace LocalSearchAlgorithmsFormApplication
                     int row = rand.Next(0, equalList.Count);
                     queens[i].setY(equalList[row]);
 
-                    // Debug.WriteLine(i + " queen " + " X - Y: " + queens[i].getX() + " - " + queens[i].getY() + " w/ heuristic: " + heuristic(queens[i]));
-                    //MessageBox.Show("Queen " + i + " has " + h + " heuristics");
                     equalList.Clear();
                 }
 
             }
-            // *************** DEBUG *****************************
-            Debug.WriteLine("");
-            Debug.WriteLine("After HillClimb...");
-            for (int i = 0; i < gridSize; i++)
-            {
-                Debug.WriteLine(i + " queen " + " X - Y: " + queens[i].getX() + " - " + queens[i].getY() + " w/ heuristic: " + heuristic.calculateHeuristic(queens[i]));
-            }
-            // *************** DEBUG ***************************
-            //heuristic.calculateHeuristicAllBoard();
             return queens;
         }
     }
