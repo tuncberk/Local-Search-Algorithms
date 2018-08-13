@@ -9,7 +9,6 @@ namespace LocalSearchAlgorithmsFormApplication
 {
     class Queen
     {
-        //public Queen[] queens = new Queen[10];
         private int x;
         private int y;
         //private int heuristicValue;

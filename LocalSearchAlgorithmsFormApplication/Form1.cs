@@ -178,11 +178,11 @@ namespace LocalSearchAlgorithmsFormApplication
                 textBox6.Visible = true;
                 textBox7.Visible = true;
                 textBox8.Visible = true;
-                textBox4.Text = "10";
-                textBox5.Text = "10";
+                textBox4.Text = "100";
+                textBox5.Text = "20";
                 textBox6.Text = "50";
                 textBox7.Text = "50";
-                textBox8.Text = "10000";
+                textBox8.Text = "1000";
                 //1
                 label1.Visible = false;
                 label2.Visible = false;
